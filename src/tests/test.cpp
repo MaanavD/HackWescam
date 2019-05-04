@@ -25,7 +25,7 @@ int main( int argc, char** argv )
   int mHighS = 200;
 
   int mLowV = 50;
-  int mHighV = 200;
+  int mHighV = 255;
 
   // 317 - 345
   // 27 - 65
@@ -39,7 +39,7 @@ int main( int argc, char** argv )
   int gHighS = 200;
 
   int gLowV = 50;
-  int gHighV = 200;
+  int gHighV = 255;
 
   // 72 - 97
   // 38 - 83
@@ -60,7 +60,8 @@ int main( int argc, char** argv )
 
   //Capture a temporary image from the camera
   Mat imgTmp;
-  cap.read(imgTmp); 
+  //cap.read(imgTmp);
+  imgTmp = imread("DroneAreaA.jpg", IMREAD_COLOR);
 
   //Create a black image with the size as the camera output
   Mat imgLines = Mat::zeros( imgTmp.size(), CV_8UC3 );;
@@ -70,7 +71,9 @@ int main( int argc, char** argv )
   {
     Mat imgOriginal;
 
-    bool bSuccess = cap.read(imgOriginal); // read a new frame from video
+    //bool bSuccess = cap.read(imgOriginal); // read a new frame from video
+    bool bSuccess = true;
+    imgOriginal = imread("DroneAreaA.jpg", IMREAD_COLOR);
 
     if (!bSuccess) //if not success, break loop
     {
@@ -116,16 +119,18 @@ int main( int argc, char** argv )
       int posY = dM01 / dArea;        
 
       imgLines = Mat::zeros( imgTmp.size(), CV_8UC3 );;
-      circle(imgLines, Point(posX, posY), 15, Scalar(0,0,255), 2, 8, 0);
+      circle(imgLines, Point(posX, posY), 30, Scalar(0,0,255), 10, 8, 0);
 
       iLastX = posX;
       iLastY = posY;
     }
 
     imshow("Thresholded Image", imgThresholded); //show the thresholded image
+    imwrite("output_thres.jpg", imgThresholded);
 
     imgOriginal = imgOriginal + imgLines;
     imshow("Original", imgOriginal); //show the original image
+    imwrite("output_target.jpg", imgOriginal);
 
     if (waitKey(30) == 27) //wait for 'esc' key press for 30ms. If 'esc' key is pressed, break loop
     {
