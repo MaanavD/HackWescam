@@ -27,7 +27,8 @@ using VideoFrameGeneric = VideoFrameOpenCV;
 using namespace std;
 using namespace wscDrone;
 
-// #define NO_FLIGHT // uncomment thus to allow the drones to fly in this demo
+bool flight = false;
+// #define NO_FLIGHT // comment thus to allow the drones to fly in this demo
 
 // 'using' permits us to use things like 'Mat' instead of 'cv::Mat' all the time
 using cv::Mat;
@@ -80,7 +81,9 @@ int main(int argc, char **argv)
 
 // If NO_FLIGHT is defined, the drones will not take off. This is helpful just to test
 // video and move the drones around manually by hand.
-#ifndef NO_FLIGHT
+//#ifndef NO_FLIGHT
+
+    while (flight == false){}
 
     // In order to get drones to do things simaltaneously, they need their own threads.
     // Both Alpha and Bravo will take off, execute mission1(), then land at the same time.
@@ -100,7 +103,8 @@ int main(int argc, char **argv)
     // Wait for threads to complete
     if (alphaThread.joinable()) { alphaThread.join(); }
     if (bravoThread.joinable()) { bravoThread.join(); }
-#endif
+
+//#endif
 
     if (displayThread.joinable()) { displayThread.join(); }
     return EXIT_SUCCESS;
@@ -182,7 +186,7 @@ std::thread launchDisplayThread()
                     Mat imageBGR;
                     cv::cvtColor(*frame, imageBGR, cv::COLOR_RGB2BGR); // convert for OpenCV BGR display
 
-                    //-- Scale the video frame to fit in the STREAMING window
+                    //-- Scal e the video frame to fit in the STREAMING window
                     // Step 3 - Rescale to fit multiple drones in the window
                     Mat scaledImage;
                     cv::resize(imageBGR, scaledImage, cv::Size(SUBWINDOW_WIDTH, SUBWINDOW_HEIGHT), 0, 0, cv::INTER_CUBIC);
@@ -322,6 +326,12 @@ case 112: // P - Take a picture with the selected drone, the download on a separ
         cout << "MANUAL: Descending!" << endl;
         g_drones[droneUnderManualControl]->getPilot()->moveDirection(MoveDirection::DOWN);
         break;
+
+    // ACTUAL MISSION RUN //
+    case 103 : // 'g'
+        cout << "MISSION: GO"
+        flight = true;
+
     default:
         if (key > 0) {
             cout << "Unknown key pressed: " << key << endl;
