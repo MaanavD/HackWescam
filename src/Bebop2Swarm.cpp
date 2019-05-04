@@ -90,16 +90,16 @@ int main(int argc, char **argv)
         landDrone(0);
     });
 
-    // std::thread bravoThread( [&]() {
-    //     takeoffDrone(1);
-    //     mission1(1);
-    //     landDrone(1);
-    // });
+    std::thread bravoThread( [&]() {
+        takeoffDrone(1);
+        mission1(1);
+        landDrone(1);
+    });
 
 
     // Wait for threads to complete
     if (alphaThread.joinable()) { alphaThread.join(); }
-    // if (bravoThread.joinable()) { bravoThread.join(); }
+    if (bravoThread.joinable()) { bravoThread.join(); }
 #endif
 
     if (displayThread.joinable()) { displayThread.join(); }
