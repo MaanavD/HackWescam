@@ -83,8 +83,8 @@ int main(int argc, char **argv)
 // video and move the drones around manually by hand.
 //#ifndef NO_FLIGHT
 
-    while (flight == false){}
-
+    while (cv::waitKey(1)!=103){}
+    cout << "MISSION: GO" << endl;
     // In order to get drones to do things simaltaneously, they need their own threads.
     // Both Alpha and Bravo will take off, execute mission1(), then land at the same time.
     std::thread alphaThread( [&]() {
@@ -326,14 +326,8 @@ case 112: // P - Take a picture with the selected drone, the download on a separ
         cout << "MANUAL: Descending!" << endl;
         g_drones[droneUnderManualControl]->getPilot()->moveDirection(MoveDirection::DOWN);
         break;
-
-    // ACTUAL MISSION RUN //
-    case 103 : // 'g'
-        cout << "MISSION: GO"
-        flight = true;
-
     default:
-        if (key > 0) {
+        if (key > 0 && key!=103) {
             cout << "Unknown key pressed: " << key << endl;
         }
         break;
