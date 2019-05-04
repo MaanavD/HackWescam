@@ -29,4 +29,7 @@ void missionLookHorizontal(int droneId);
 void missionDance();
 void missionDance2();
 
+void missionTrackCenter1(int droneId);
+void missionTrackCenter2(int droneId);
+
 #endif /* SRC_MISSIONS_H_ */

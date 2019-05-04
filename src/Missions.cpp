@@ -118,7 +118,29 @@ void missionLookHorizontal(int droneId)
     waitSeconds(3);
 }
 
+void missionTrackCenter1(int droneId)
+{
+    CameraControlPtr camera  = g_drones[droneId]->getCameraControl();
+    PilotPtr         pilot   = g_drones[droneId]->getPilot();
 
+    camera->setTiltPan(-60.0f, 0);
+    waitSeconds(5);
+    camera->setForward();
+    waitSeconds(5);
+}
+
+void missionTrackCenter2(int droneId)
+{
+    CameraControlPtr camera  = g_drones[droneId]->getCameraControl();
+    PilotPtr         pilot   = g_drones[droneId]->getPilot();
+
+    pilot->moveRelativeMetres(2.0, 0.0); // Move forward 1 metre
+    waitSeconds(5);
+    camera->setTiltPan(-90.0f, 0);
+    waitSeconds(5);
+    camera->setForward();
+    pilot->moveRelativeMetres(-2.0, 0.0); // move backward 1 meter
+}
 
 
 

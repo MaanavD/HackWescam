@@ -67,10 +67,15 @@ int main( int argc, char** argv )
   //Create a black image with the size as the camera output
   Mat imgLines = Mat::zeros( imgTmp.size(), CV_8UC3 );;
 
-
+  int counter = 0;
   while (true)
   {
     Mat imgOriginal;
+
+    // Time
+    time_t tt = time(NULL);
+    string time_s = ctime(&tt);
+    time_s = "Time: " + time_s.substr(0, time_s.size()-1);
 
     //bool bSuccess = cap.read(imgOriginal); // read a new frame from video
     bool bSuccess = true;
@@ -85,6 +90,10 @@ int main( int argc, char** argv )
     // Convert to HSV
     Mat imgHSV;
     cvtColor(imgOriginal, imgHSV, COLOR_BGR2HSV); //Convert the captured frame from BGR to HSV
+    
+    // Save normal image every x number of times
+    if (counter % 10 == 0)
+        imwrite("normal: " + time_s + ".jpg", imgOriginal);
 
     //Threshold the image
     Mat imgThresholded1;
@@ -112,6 +121,8 @@ int main( int argc, char** argv )
     double dM10 = oMoments.m10;
     double dArea = oMoments.m00;
 
+    cvtColor(imgThresholded, imgThresholded, COLOR_GRAY2BGR);
+
     // if the area <= 10000, I consider that the there are no object in the image and it's because of the noise, the area is not zero 
     if (dArea > 10000)
     {
@@ -119,31 +130,26 @@ int main( int argc, char** argv )
       int posX = dM10 / dArea;
       int posY = dM01 / dArea;        
 
-      imgLines = Mat::zeros( imgTmp.size(), CV_8UC3 );;
-      circle(imgLines, Point(posX, posY), 30, Scalar(0,0,255), 10, 8, 0);
-      //circle(imgThresholded, Point(posX, posY), 30, Scalar(255), 10, 8, 0);
+      string position_s = "Position: " + to_string(posX) + ", " + to_string(posY);
+      putText(imgThresholded, position_s, Point(0, 150), FONT_HERSHEY_PLAIN, 5.0, Scalar(255, 255, 255), 4, 8, false);
+
+      //imgLines = Mat::zeros( imgTmp.size(), CV_8UC3 );;
+      //circle(imgLines, Point(posX, posY), 30, Scalar(0,0,255), 10, 8, 0);
+      circle(imgThresholded, Point(posX, posY), 30, Scalar(0,0,255), 10, 8, 0);
 
       iLastX = posX;
       iLastY = posY;
     }
-
-    time_t tt = time(NULL);
-    string s = ctime(&tt);
-    s = s.substr(0, s.size()-1);
     
-    Mat imgLinesThres;
-    cvtColor(imgLines, imgLinesThres, COLOR_HSV2RGB);
-    cvtColor(imgLinesThres, imgLinesThres, COLOR_RGB2GRAY);
-    imgThresholded += imgLinesThres;
-    //vector<Mat> channels;
-    //split(imgLines, channels);
-    //imgThresholded += channels[2];
-    imshow("Thresholded Image", imgThresholded); //show the thresholded image
-    imwrite("output_thres: " + s + ".jpg", imgThresholded);
+    putText(imgThresholded, time_s, Point(0, 50), FONT_HERSHEY_PLAIN, 5.0, Scalar(255, 255, 255), 4, 8, false);
+    //imshow("Thresholded Image", imgThresholded); //show the thresholded image
+    imwrite("output_thres.jpg", imgThresholded);
 
-    imgOriginal = imgOriginal + imgLines;
-    imshow("Original", imgOriginal); //show the original image
-    imwrite("output_target: " + s + ".jpg", imgOriginal);
+    //imgOriginal = imgOriginal + imgLines;
+    //imshow("Original", imgOriginal); //show the original image
+    imwrite("output_target.jpg", imgOriginal);
+    
+    counter += 1;
 
     if (waitKey(30) == 27) //wait for 'esc' key press for 30ms. If 'esc' key is pressed, break loop
     {

@@ -82,27 +82,42 @@ int main(int argc, char **argv)
 // If NO_FLIGHT is defined, the drones will not take off. This is helpful just to test
 // video and move the drones around manually by hand.
 //#ifndef NO_FLIGHT
-
-    while (cv::waitKey(1)!=103){}
+    char com = 0;
+    while (com != 103 && com != 104)
+    {
+        cout << "Enter Command (g) to start: ";
+        cin >> com;
+        cout << endl;
+    }
+    
     cout << "MISSION: GO" << endl;
     // In order to get drones to do things simaltaneously, they need their own threads.
     // Both Alpha and Bravo will take off, execute mission1(), then land at the same time.
+    
     std::thread alphaThread( [&]() {
         takeoffDrone(0);
-        mission1(0);
+        if (com == 103) missionTrackCenter1(0);
+        if (com == 104) missionTrackCenter2(0);
         landDrone(0);
     });
 
-    std::thread bravoThread( [&]() {
-        takeoffDrone(1);
-        mission1(1);
-        landDrone(1);
-    });
-
+    //std::thread bravoThread( [&]() {
+        //takeoffDrone(1);
+        //missionTrackCenter1(1);
+        //landDrone(1);
+    //});
+    
+    //std::thread charlieThread( [&]() {
+        //takeoffDrone(2);
+        //missionTrackCenter1(2);
+        //landDrone(2);
+    //});
 
     // Wait for threads to complete
     if (alphaThread.joinable()) { alphaThread.join(); }
-    if (bravoThread.joinable()) { bravoThread.join(); }
+    //if (bravoThread.joinable()) { bravoThread.join(); }
+    //if (charlieThread.joinable()) { charlieThread.join(); }
+    
 
 //#endif
 
@@ -279,7 +294,6 @@ case 112: // P - Take a picture with the selected drone, the download on a separ
         waitSeconds(5);
         g_drones[droneUnderManualControl]->getVideoDriver()->start();
         break;
-
     case 49:   // 1
         droneUnderManualControl = 0;
         break;
@@ -325,6 +339,28 @@ case 112: // P - Take a picture with the selected drone, the download on a separ
     case 45 : // numeric "-"
         cout << "MANUAL: Descending!" << endl;
         g_drones[droneUnderManualControl]->getPilot()->moveDirection(MoveDirection::DOWN);
+        break;
+    case 103 : // 'g'
+	//cout << "!!! MISSION IS A GO !!!" << endl;
+        //while (cv::waitKey(1)!=103){}
+    	//cout << "MISSION: GO" << endl;
+    	// In order to get drones to do things simaltaneously, they need their own threads.
+    	// Both Alpha and Bravo will take off, execute mission1(), then land at the same time.
+    	//std::thread alphaThread( [&]() {
+    	//    takeoffDrone(0);
+    	//    mission1(0);
+   	 //    landDrone(0);
+    	//});
+
+    	//std::thread bravoThread( [&]() {
+   	 //    takeoffDrone(1);
+   	 //    mission1(1);
+   	 //    landDrone(1);
+    	//});
+
+    	// Wait for threads to complete
+    	//if (alphaThread.joinable()) { alphaThread.join(); }
+    	//if (bravoThread.joinable()) { bravoThread.join(); }
         break;
     default:
         if (key > 0 && key!=103) {
