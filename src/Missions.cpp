@@ -77,50 +77,6 @@ void mission1(int droneId)
     pilot->moveRelativeMetres(-2.0, 0.0); // move backward 1 meter
 }
 
-void missionSquare(int droneID)
-{
-    CameraControlPtr camera  = g_drones[droneId]->getCameraControl();
-    PilotPtr         pilot   = g_drones[droneId]->getPilot();
-
-    const float STEP_DISTANCE = 1.0f;
-    const float TURN_ANGLE =  -90.0f;
-
-    const float CURRENT_X = 0.0;
-    const float CURRENT_Y = 0.0;
-
-    //Set coordinates as corners based on photos, assuming these are tuples
-    const float NORTH_EAST; 
-    const float NORTH_WEST;
-    const float SOUTH_EAST;
-    const float SOUTH_WEST;
-    
-    
-    pilot->moveRelativeMetres(0.0f, 0.5f);
-    camera->setTiltPan(17.0f, 45.0f);
-    //Take Picture
-    waitSeconds(3);
-    
-    pilot->moveRelativeMetres(1.0f, 0.0f);
-    camera->setTiltPan(17.0f, -45.0f);
-    //Take Picture
-    waitSeconds(3);
-    
-    pilot->moveRelativeMetres(0.0f, -1.0f);
-    camera->setTiltPan(-17.0f, 45.0f);
-    //Take Picture
-    waitSeconds(3);
-
-    pilot->moveRelativeMetres(-1.0f, 0.0f);
-    camera->setTiltPan(-17.0f, -45.0f);
-    //Take Picture
-    waitSeconds(3);
-    
-    pilot->moveRelativeMetres(-0.5f, 0.0f);
-    camera->setTiltPan(0.0f, 0.0f);
-    //Take Picture
-    waitSeconds(3);
-}
-
 // Fly a triangle by strafing to the right, then turning 120 degrees, 3x.
 void missionTriange(int droneId)
 {

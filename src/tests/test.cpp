@@ -1,4 +1,5 @@
 #include <iostream>
+#include <ctime>
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 
@@ -120,17 +121,29 @@ int main( int argc, char** argv )
 
       imgLines = Mat::zeros( imgTmp.size(), CV_8UC3 );;
       circle(imgLines, Point(posX, posY), 30, Scalar(0,0,255), 10, 8, 0);
+      //circle(imgThresholded, Point(posX, posY), 30, Scalar(255), 10, 8, 0);
 
       iLastX = posX;
       iLastY = posY;
     }
 
+    time_t tt = time(NULL);
+    string s = ctime(&tt);
+    s = s.substr(0, s.size()-1);
+    
+    Mat imgLinesThres;
+    cvtColor(imgLines, imgLinesThres, COLOR_HSV2RGB);
+    cvtColor(imgLinesThres, imgLinesThres, COLOR_RGB2GRAY);
+    imgThresholded += imgLinesThres;
+    //vector<Mat> channels;
+    //split(imgLines, channels);
+    //imgThresholded += channels[2];
     imshow("Thresholded Image", imgThresholded); //show the thresholded image
-    imwrite("output_thres.jpg", imgThresholded);
+    imwrite("output_thres: " + s + ".jpg", imgThresholded);
 
     imgOriginal = imgOriginal + imgLines;
     imshow("Original", imgOriginal); //show the original image
-    imwrite("output_target.jpg", imgOriginal);
+    imwrite("output_target: " + s + ".jpg", imgOriginal);
 
     if (waitKey(30) == 27) //wait for 'esc' key press for 30ms. If 'esc' key is pressed, break loop
     {
