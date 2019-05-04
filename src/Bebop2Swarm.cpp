@@ -27,7 +27,7 @@ using VideoFrameGeneric = VideoFrameOpenCV;
 using namespace std;
 using namespace wscDrone;
 
-#define NO_FLIGHT // uncomment thus to allow the drones to fly in this demo
+// #define NO_FLIGHT // uncomment thus to allow the drones to fly in this demo
 
 // 'using' permits us to use things like 'Mat' instead of 'cv::Mat' all the time
 using cv::Mat;
@@ -90,16 +90,16 @@ int main(int argc, char **argv)
         landDrone(0);
     });
 
-    std::thread bravoThread( [&]() {
-        takeoffDrone(1);
-        mission1(1);
-        landDrone(1);
-    });
+    // std::thread bravoThread( [&]() {
+    //     takeoffDrone(1);
+    //     mission1(1);
+    //     landDrone(1);
+    // });
 
 
     // Wait for threads to complete
     if (alphaThread.joinable()) { alphaThread.join(); }
-    if (bravoThread.joinable()) { bravoThread.join(); }
+    // if (bravoThread.joinable()) { bravoThread.join(); }
 #endif
 
     if (displayThread.joinable()) { displayThread.join(); }
