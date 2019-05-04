@@ -18,42 +18,42 @@ int main( int argc, char** argv )
   namedWindow("Control", CV_WINDOW_AUTOSIZE); //create a window called "Control"
 
   // Magenta
-  int mLowH = 310;
-  int mHighH = 350;
+  int mLowH = 317/2;
+  int mHighH = 345/2;
 
-  int mLowS = 25; 
-  int mHighS = 70;
+  int mLowS = 50; 
+  int mHighS = 200;
 
-  int mLowV = 60;
-  int mHighV = 120;
+  int mLowV = 50;
+  int mHighV = 200;
 
   // 317 - 345
   // 27 - 65
   // 62 - 100
 
   // Green
-  int gLowH = 70;
-  int gHighH = 100;
+  int gLowH = 72/2;
+  int gHighH = 97/2;
 
-  int gLowS = 35; 
-  int gHighS = 85;
+  int gLowS = 50; 
+  int gHighS = 200;
 
   int gLowV = 50;
-  int gHighV = 100;
+  int gHighV = 200;
 
   // 72 - 97
   // 38 - 83
   // 55 - 80
 
   //Create trackbars in "Control" window
-  createTrackbar("LowH", "Control", &mLowH, 179); //Hue (0 - 179)
-  createTrackbar("HighH", "Control", &mHighH, 179);
+  //createTrackbar("LowH", "Control", &mLowH, 179); //Hue (0 - 179)
+  //createTrackbar("HighH", "Control", &mHighH, 179);
 
-  createTrackbar("LowS", "Control", &mLowS, 255); //Saturation (0 - 255)
-  createTrackbar("HighS", "Control", &mHighS, 255);
+  //createTrackbar("LowS", "Control", &mLowS, 255); //Saturation (0 - 255)
+  //createTrackbar("HighS", "Control", &mHighS, 255);
 
-  createTrackbar("LowV", "Control", &mLowV, 255);//Value (0 - 255)
-  createTrackbar("HighV", "Control", &mHighV, 255);
+  //createTrackbar("LowV", "Control", &mLowV, 255);//Value (0 - 255)
+  //createTrackbar("HighV", "Control", &mHighV, 255);
 
   int iLastX = -1; 
   int iLastY = -1;
@@ -85,12 +85,13 @@ int main( int argc, char** argv )
     //Threshold the image
     Mat imgThresholded1;
     inRange(imgHSV, Scalar(mLowH, mLowS, mLowV), Scalar(mHighH, mHighS, mHighV), imgThresholded1);
-    // Mat imgThresholded2;
-    // inRange(imgHSV, Scalar(gLowH, gLowS, gLowV), Scalar(gHighH, gHighS, gHighV), imgThresholded2);  
+    Mat imgThresholded2;
+    inRange(imgHSV, Scalar(gLowH, gLowS, gLowV), Scalar(gHighH, gHighS, gHighV), imgThresholded2);  
 
     Mat imgThresholded;
     // imgThresholded = imgThresholded1 + imgThresholded2;
-    imgThresholded1.copyTo(imgThresholded)
+    //imgThresholded1.copyTo(imgThresholded);
+    imgThresholded = imgThresholded1 + imgThresholded2; 
 
     //morphological opening (removes small objects from the foreground)
     erode(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)) );
@@ -114,13 +115,8 @@ int main( int argc, char** argv )
       int posX = dM10 / dArea;
       int posY = dM01 / dArea;        
 
-      circle(imgLines, Point(posX, posY), 5, Scalar(0,0,255), 1, 8, 0);
-
-      // if (iLastX >= 0 && iLastY >= 0 && posX >= 0 && posY >= 0)
-      // {
-      //   //Draw a red line from the previous point to the current point
-      //   line(imgLines, Point(posX, posY), Point(iLastX, iLastY), Scalar(0,0,255), 2);
-      // } 
+      imgLines = Mat::zeros( imgTmp.size(), CV_8UC3 );;
+      circle(imgLines, Point(posX, posY), 15, Scalar(0,0,255), 2, 8, 0);
 
       iLastX = posX;
       iLastY = posY;
