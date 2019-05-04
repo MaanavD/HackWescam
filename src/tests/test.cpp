@@ -7,7 +7,7 @@ using namespace std;
 
 int main( int argc, char** argv )
 {
-  VideoCapture cap(0); //capture the video from webcam
+  VideoCapture cap(1); //capture the video from webcam
 
   if ( !cap.isOpened() )  // if not success, exit program
   {
@@ -46,14 +46,14 @@ int main( int argc, char** argv )
   // 55 - 80
 
   //Create trackbars in "Control" window
-  createTrackbar("LowH", "Control", &iLowH, 179); //Hue (0 - 179)
-  createTrackbar("HighH", "Control", &iHighH, 179);
+  createTrackbar("LowH", "Control", &mLowH, 179); //Hue (0 - 179)
+  createTrackbar("HighH", "Control", &mHighH, 179);
 
-  createTrackbar("LowS", "Control", &iLowS, 255); //Saturation (0 - 255)
-  createTrackbar("HighS", "Control", &iHighS, 255);
+  createTrackbar("LowS", "Control", &mLowS, 255); //Saturation (0 - 255)
+  createTrackbar("HighS", "Control", &mHighS, 255);
 
-  createTrackbar("LowV", "Control", &iLowV, 255);//Value (0 - 255)
-  createTrackbar("HighV", "Control", &iHighV, 255);
+  createTrackbar("LowV", "Control", &mLowV, 255);//Value (0 - 255)
+  createTrackbar("HighV", "Control", &mHighV, 255);
 
   int iLastX = -1; 
   int iLastY = -1;
@@ -84,9 +84,9 @@ int main( int argc, char** argv )
 
     //Threshold the image
     Mat imgThresholded1;
-    inRange(procImage, Scalar(mLowH, mLowS, mLowV), Scalar(mHighH, mHighS, mHighV), imgThresholded1);
+    inRange(imgHSV, Scalar(mLowH, mLowS, mLowV), Scalar(mHighH, mHighS, mHighV), imgThresholded1);
     Mat imgThresholded2;
-    inRange(procImage, Scalar(gLowH, gLowS, gLowV), Scalar(gHighH, gHighS, gHighV), imgThresholded2);  
+    inRange(imgHSV, Scalar(gLowH, gLowS, gLowV), Scalar(gHighH, gHighS, gHighV), imgThresholded2);  
 
     Mat imgThresholded;
     imgThresholded = imgThresholded1 + imgThresholded2;
@@ -113,7 +113,7 @@ int main( int argc, char** argv )
       int posX = dM10 / dArea;
       int posY = dM01 / dArea;        
 
-      circle(imgLines, Point(posX, posY), 5, Scalar(0,0,255), 1, 8, 0)
+      circle(imgLines, Point(posX, posY), 5, Scalar(0,0,255), 1, 8, 0);
 
       // if (iLastX >= 0 && iLastY >= 0 && posX >= 0 && posY >= 0)
       // {
