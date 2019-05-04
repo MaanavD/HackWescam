@@ -85,11 +85,12 @@ int main( int argc, char** argv )
     //Threshold the image
     Mat imgThresholded1;
     inRange(imgHSV, Scalar(mLowH, mLowS, mLowV), Scalar(mHighH, mHighS, mHighV), imgThresholded1);
-    Mat imgThresholded2;
-    inRange(imgHSV, Scalar(gLowH, gLowS, gLowV), Scalar(gHighH, gHighS, gHighV), imgThresholded2);  
+    // Mat imgThresholded2;
+    // inRange(imgHSV, Scalar(gLowH, gLowS, gLowV), Scalar(gHighH, gHighS, gHighV), imgThresholded2);  
 
     Mat imgThresholded;
-    imgThresholded = imgThresholded1 + imgThresholded2;
+    // imgThresholded = imgThresholded1 + imgThresholded2;
+    imgThresholded1.copyTo(imgThresholded)
 
     //morphological opening (removes small objects from the foreground)
     erode(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)) );
