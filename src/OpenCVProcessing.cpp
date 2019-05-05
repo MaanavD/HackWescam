@@ -43,7 +43,7 @@ void harrisCorner(Mat &grayImage, Mat &outputImage)
 }
 
 
-void openCVProcessing(shared_ptr<Mat> imageToProcess, bool *processingDone)
+void openCVProcessing(shared_ptr<Mat> imageToProcess, bool *processingDone, int *alpha_x, int *alpha_y)
 {
     //Capture a temporary image from the camera
     Mat imgOriginal;
@@ -59,28 +59,28 @@ void openCVProcessing(shared_ptr<Mat> imageToProcess, bool *processingDone)
     //    imwrite("normal: " + s + ".jpg", imgOriginal);
 
     // Magenta
-    int mLowH = 317/2;
-    int mHighH = 345/2;
+    int mLowH = 315/2;
+    int mHighH = 340/2;
 
     int mLowS = 50; 
-    int mHighS = 200;
+    int mHighS = 150;
 
-    int mLowV = 50;
-    int mHighV = 255;
+    int mLowV = 70;
+    int mHighV = 200;
 
     // 317 - 345
     // 27 - 65
     // 62 - 100
 
     // Green
-    int gLowH = 72/2;
-    int gHighH = 97/2;
+    int gLowH = 75/2;
+    int gHighH = 95/2;
 
     int gLowS = 50; 
-    int gHighS = 200;
+    int gHighS = 150;
 
-    int gLowV = 50;
-    int gHighV = 255;
+    int gLowV = 70;
+    int gHighV = 200;
 
     // 72 - 97
     // 38 - 83
@@ -122,8 +122,8 @@ void openCVProcessing(shared_ptr<Mat> imageToProcess, bool *processingDone)
       int posX = dM10 / dArea;
       int posY = dM01 / dArea;
 
-      //*alpha_x = posX
-      //*alpha_y = posY
+      *alpha_x = posX;
+      *alpha_y = posY;
 
       string position_s = "Position: " + to_string(posX) + ", " + to_string(posY);
       putText(imgThresholded, position_s, Point(0, 125), FONT_HERSHEY_PLAIN, 3.0, Scalar(255, 255, 255), 2, 8, false);

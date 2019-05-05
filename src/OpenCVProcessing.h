@@ -11,6 +11,6 @@
 
 #include "opencv2/opencv.hpp"
 
-void openCVProcessing(std::shared_ptr<cv::Mat> imageToProcessPtr, bool *processingDone);
+void openCVProcessing(std::shared_ptr<cv::Mat> imageToProcessPtr, bool *processingDone, int *alpha_x, int *alpha_y);
 
 #endif /* SRC_OPENCVPROCESSING_H_ */

@@ -102,30 +102,44 @@ int main(int argc, char **argv)
     cout << "MISSION: GO" << endl;
     // In order to get drones to do things simaltaneously, they need their own threads.
     // Both Alpha and Bravo will take off, execute mission1(), then land at the same time.
-    
-    std::thread alphaThread( [&]() {
-        takeoffDrone(0);
-        if (com == 103) missionTrackCenter1(0);
-        if (com == 104) missionTrackCenter2(0);
-        landDrone(0);
-    });
+
+    volatile bool bravoDone = false;
+    volatile bool charlieDone = false;
 
     std::thread bravoThread( [&]() {
         takeoffDrone(1);
-        missionTrackCenter1(1);
+        if (com == 103) mission1(1);
+        if (com == 104) missionOverwatchBravo(1);
         landDrone(1);
+
+	bravoDone = true;
     });
     
     std::thread charlieThread( [&]() {
         takeoffDrone(2);
-        missionTrackCenter1(2);
+        if (com == 103) mission1(2);
+        if (com == 104) missionOverwatchCharlie(2);
         landDrone(2);
+ 
+        charlieDone = true;
     });
 
+    std::thread alphaThread( [&]() {
+        takeoffDrone(0);
+        if (com == 103) mission1(0);
+        if (com == 104) missionOverwatchAlpha(0);
+        
+	while (!bravoDone && !charlieDone) {}
+
+        landDrone(0);
+    });
+
+
     // Wait for threads to complete
-    if (alphaThread.joinable()) { alphaThread.join(); }
     if (bravoThread.joinable()) { bravoThread.join(); }
     if (charlieThread.joinable()) { charlieThread.join(); }
+    if (alphaThread.joinable()) { alphaThread.join(); }
+    
     
 
 //#endif

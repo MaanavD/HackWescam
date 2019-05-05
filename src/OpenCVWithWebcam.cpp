@@ -10,6 +10,15 @@
  *    much slower than frame rate
  *  - show how to capture keyboard events pressed when one one of the OpenCV windows is active
  */
+
+
+
+int main(int argc, char **argv)
+{
+    return 0;
+}
+
+/*
 #include <unistd.h>
 #include <iostream>
 #include <thread>
@@ -148,6 +157,6 @@ void openCVKeyCallbacks(const int key)
     }
 
 }
-
+*/
 
 
