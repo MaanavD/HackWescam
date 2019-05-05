@@ -28,7 +28,7 @@ using namespace std;
 using namespace wscDrone;
 
 bool flight = false;
-// #define NO_FLIGHT // comment thus to allow the drones to fly in this demo
+//#define NO_FLIGHT // comment thus to allow the drones to fly in this demo
 
 // 'using' permits us to use things like 'Mat' instead of 'cv::Mat' all the time
 using cv::Mat;
@@ -95,7 +95,7 @@ int main(int argc, char **argv)
 
 // If NO_FLIGHT is defined, the drones will not take off. This is helpful just to test
 // video and move the drones around manually by hand.
-//#ifndef NO_FLIGHT
+#ifndef NO_FLIGHT
     char com = 0;
     while (com != 103 && com != 104)
     {
@@ -184,7 +184,7 @@ int main(int argc, char **argv)
     
     
 
-//#endif
+#endif
 
     if (displayThread.joinable()) { displayThread.join(); }
     return EXIT_SUCCESS;
@@ -299,7 +299,7 @@ std::thread launchDisplayThread()
                         	// Deep copy the new frame to the processingImage buffer
                         	imageBGR.copyTo(*processingImagePtr1);
 
-                        	std::thread procThread1(colourThresholding, processingImagePtr1, &processingDone1, &alpha_x, &alpha_y); // Launch a new thread
+                        	std::thread procThread1(colourThresholding2, processingImagePtr1, &processingDone1, &alpha_x, &alpha_y, 0, 10, 160, 179); // Launch a new thread
                         	procThread1.detach(); // you must detach the thread
                     	}
 		    }

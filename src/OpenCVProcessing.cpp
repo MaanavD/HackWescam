@@ -62,10 +62,10 @@ void colourThresholding(std::shared_ptr<cv::Mat> imageToProcess, bool *processin
     int mLowH = 317/2;
     int mHighH = 345/2;
 
-    int mLowS = 20; 
+    int mLowS = 50; 
     int mHighS = 255;
 
-    int mLowV = 20;
+    int mLowV = 50;
     int mHighV = 255;
 
     // 317 - 345
@@ -76,10 +76,10 @@ void colourThresholding(std::shared_ptr<cv::Mat> imageToProcess, bool *processin
     int gLowH = 72/2;
     int gHighH = 97/2;
 
-    int gLowS = 20; 
+    int gLowS = 50; 
     int gHighS = 255;
 
-    int gLowV = 20;
+    int gLowV = 50;
     int gHighV = 255;
 
     // 72 - 97
@@ -99,12 +99,12 @@ void colourThresholding(std::shared_ptr<cv::Mat> imageToProcess, bool *processin
     imgThresholded = imgThresholded1 + imgThresholded2; 
 
     //morphological opening (removes small objects from the foreground)
-    erode(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(15, 15)) );
-    dilate(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(15, 15)) ); 
+    erode(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(4, 4)) );
+    dilate(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(4, 4)) ); 
 
     //morphological closing (removes small holes from the foreground)
-    dilate(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(15, 15)) ); 
-    erode(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(15, 15)) );
+    dilate(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(4, 4)) ); 
+    erode(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(4, 4)) );
 
     //Calculate the moments of the thresholded image
     Moments oMoments = moments(imgThresholded);
@@ -156,33 +156,43 @@ void colourThresholding2(std::shared_ptr<cv::Mat> imageToProcess, bool *processi
     //if (counter % 10 == 0)
     //    imwrite("normal: " + s + ".jpg", imgOriginal);
 
-    // Magenta
+    // RED
     //int mLowH = 317/2;
     //int mHighH = 345/2;
 
-    int mLowS = 20; 
+    int mLowS = 50; 
     int mHighS = 255;
 
-    int mLowV = 20;
+    int mLowV = 50;
     int mHighV = 255;
 
     // 317 - 345
     // 27 - 65
     // 62 - 100
 
-    // Green
+    // RED
     //int gLowH = 72/2;
     //int gHighH = 97/2;
 
-    int gLowS = 20; 
+    int gLowS = 50; 
     int gHighS = 255;
 
-    int gLowV = 20;
+    int gLowV = 50;
     int gHighV = 255;
 
     // 72 - 97
     // 38 - 83
     // 55 - 80
+
+    // GREEN
+    int fLowH = 80/2;
+    int fHighH = 140/2;
+
+    int fLowS = 50; 
+    int fHighS = 255;
+
+    int fLowV = 50;
+    int fHighV = 255;
 
     //Create a black image with the size as the camera output
     Mat imgLines = Mat::zeros(imgOriginal.size(), CV_8UC3);;
@@ -192,9 +202,11 @@ void colourThresholding2(std::shared_ptr<cv::Mat> imageToProcess, bool *processi
     inRange(imgOriginal, Scalar(mLowH, mLowS, mLowV), Scalar(mHighH, mHighS, mHighV), imgThresholded1);
     Mat imgThresholded2;
     inRange(imgOriginal, Scalar(gLowH, gLowS, gLowV), Scalar(gHighH, gHighS, gHighV), imgThresholded2);  
+    Mat imgThresholded3;
+    inRange(imgOriginal, Scalar(fLowH, fLowS, fLowV), Scalar(fHighH, fHighS, fHighV), imgThresholded3); 
 
     Mat imgThresholded;
-    imgThresholded = imgThresholded1 + imgThresholded2; 
+    imgThresholded = imgThresholded1 + imgThresholded2 + imgThresholded3; 
 
     //morphological opening (removes small objects from the foreground)
     erode(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(15, 15)) );
