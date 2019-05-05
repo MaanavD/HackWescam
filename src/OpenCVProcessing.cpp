@@ -62,10 +62,10 @@ void colourThresholding(shared_ptr<Mat> imageToProcess, bool *processingDone, in
     int mLowH = 317/2;
     int mHighH = 345/2;
 
-    int mLowS = 50; 
-    int mHighS = 150;
+    int mLowS = 20; 
+    int mHighS = 255;
 
-    int mLowV = 50;
+    int mLowV = 20;
     int mHighV = 255;
 
     // 317 - 345
@@ -76,10 +76,10 @@ void colourThresholding(shared_ptr<Mat> imageToProcess, bool *processingDone, in
     int gLowH = 72/2;
     int gHighH = 97/2;
 
-    int gLowS = 50; 
-    int gHighS = 150;
+    int gLowS = 20; 
+    int gHighS = 255;
 
-    int gLowV = 50;
+    int gLowV = 20;
     int gHighV = 255;
 
     // 72 - 97
@@ -99,12 +99,12 @@ void colourThresholding(shared_ptr<Mat> imageToProcess, bool *processingDone, in
     imgThresholded = imgThresholded1 + imgThresholded2; 
 
     //morphological opening (removes small objects from the foreground)
-    erode(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)) );
-    dilate(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)) ); 
+    erode(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(15, 15)) );
+    dilate(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(15, 15)) ); 
 
     //morphological closing (removes small holes from the foreground)
-    dilate(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)) ); 
-    erode(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)) );
+    dilate(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(15, 15)) ); 
+    erode(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(15, 15)) );
 
     //Calculate the moments of the thresholded image
     Moments oMoments = moments(imgThresholded);
@@ -155,12 +155,12 @@ void contrast(shared_ptr<Mat> imageToProcess, bool *processingDone)
 
     double beta = 200.0; // CANNOT GO OVER 255
     int kappa = 259; // stay at 259
-    double contrast_factor = kappa * (beta + 255) / (255 *(kappa - beta));
+    double contrast_factor = (kappa * (beta + 255)) / (255 *(kappa - beta));
     
     Scalar scale(128, 128, 128);
 
     imgCont -= scale;
-    imgCont += contrast_factor;
+    imgCont *= contrast_factor;
     imgCont += scale;
 
     imgCont.convertTo(imgCont, CV_8U);

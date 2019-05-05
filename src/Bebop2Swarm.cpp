@@ -134,15 +134,34 @@ int main(int argc, char **argv)
 	    init_x = alpha_x;
 	    init_y = alpha_y;
 
-	    int counter = 0;
+	    double sumx = 0;
+	    double sumy = 0;
+
+	    int counter = 1;
 	    while (!bravoDone && !charlieDone) {
-	        string dx = to_string(init_x - alpha_x);
-	        string dy = to_string(init_y - alpha_y);
-	        if (counter % 20 == 0) cout << "DeltaX: " + dx + "   ||   DeltaY: " + dy << endl;
-                //missionQual1_2(0, dx, dy);
+	        int dx =  alpha_x - init_x;
+	        int dy =  init_y - alpha_y;
+	        if (counter % 500 == 0) {
+		    cout << "DeltaX: " + to_string(dx) + "   ||   DeltaY: " + to_string(dy) << endl;
+		    missionQual1_2(0, sumx/(double) counter, sumy/(double) counter);
+                    sumx = 0;
+		    sumy = 0;
+		    counter = 1;
+                }
+		
+		sumx += dx;
+		sumy += dy;
 
 		counter += 1;
 	    }
+
+	    //sumx = sumx / counter;
+	    //sumy = sumy / counter;
+
+	    //cout << endl << sumx << endl;
+	    //cout << endl << sumy << endl;
+
+	    //missionQual1_2(0, sumx, sumy);
 
 	    missionQual1_3(0);
 	}

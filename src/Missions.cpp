@@ -202,17 +202,17 @@ void missionQual1_1(int droneId)
     CameraControlPtr camera  = g_drones[droneId]->getCameraControl();
     PilotPtr         pilot   = g_drones[droneId]->getPilot();
 
-    pilot->moveRelativeMetres(-1.5, 0.0); // move back
-    camera->setTiltPan(-55.0f, 0); // look angled
-    waitSeconds(2);
+    pilot->moveRelativeMetres(-1.6, 0.0); // move back
+    camera->setTiltPan(-36.0f, 0); // look angled
+    waitSeconds(4);
 }
 
-void missionQual1_2(int droneId, int dx, int dy)
+void missionQual1_2(int droneId, double dx, double dy)
 {
     CameraControlPtr camera  = g_drones[droneId]->getCameraControl();
     PilotPtr         pilot   = g_drones[droneId]->getPilot();
 
-    
+    pilot->moveRelativeMetres(dx / 1000, dy / 1000);
 }
 
 void missionQual1_3(int droneId)
@@ -220,7 +220,7 @@ void missionQual1_3(int droneId)
     CameraControlPtr camera  = g_drones[droneId]->getCameraControl();
     PilotPtr         pilot   = g_drones[droneId]->getPilot();
 
-    pilot->moveRelativeMetres(1.5, 0.0);
+    pilot->moveRelativeMetres(1.6, 0.0);
     camera->setTiltPan(-35.0f, 0);
     waitSeconds(5);
     camera->setForward();
@@ -228,5 +228,5 @@ void missionQual1_3(int droneId)
 
 void wait(int droneId)
 {
-    waitSeconds(40);
+    waitSeconds(120);
 }
