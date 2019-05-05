@@ -296,7 +296,8 @@ void colourThresholding2Save(std::shared_ptr<cv::Mat> imageToProcess, bool *proc
     // 38 - 83
     // 55 - 80
 
-    int yLowH = 52;
+    // yellow
+    int yLowH = 50;
     int yHighH = 60;
 
     int yLowS = 50; 
@@ -339,7 +340,7 @@ void colourThresholding2Save(std::shared_ptr<cv::Mat> imageToProcess, bool *proc
     
 
     // if the area <= 10000, I consider that the there are no object in the image and it's because of the noise, the area is not zero 
-    if (dArea > 10000)
+    if (dArea > 80000)
     {
       //calculate the position of the ball
       int posX = dM10 / dArea;
@@ -357,7 +358,7 @@ void colourThresholding2Save(std::shared_ptr<cv::Mat> imageToProcess, bool *proc
     putText(imgThresholded, time_s, Point(0, 25), FONT_HERSHEY_PLAIN, 3.0, Scalar(255, 255, 255), 2, 8, false);
 
     
-    if (counter % 4 == 0 && dArea > 1000000) {
+    if (counter % 5 == 0 && dArea > 500000) {
         imwrite("./good/thres - " + time_s  + ".jpg", imgThresholded);
 	imwrite("./good/color - " + time_s  + ".jpg", (*imageToProcess));
 	cout << "AREA: ";

@@ -97,7 +97,7 @@ int main(int argc, char **argv)
 // video and move the drones around manually by hand.
 #ifndef NO_FLIGHT
     char com = 0;
-    while (com != 103 && com != 104 && com != 105 && com != 106)
+    while (com != 103 && com != 104 && com != 105 && com != 106 && com != 107)
     {
         cout << "Enter Command (g) to start: ";
         cin >> com;
@@ -119,6 +119,7 @@ int main(int argc, char **argv)
         if (com == 104) wait(1, 25);
 	if (com == 105) ahmed(1);
 	if (com == 106) ahmed(1);
+	if (com == 107) wait(1, 1);
 
 	bravoDone = true;
     });
@@ -127,7 +128,7 @@ int main(int argc, char **argv)
         if (com == 103) goldenAngel(2);
         if (com == 104) wait(2, 25);
 	if (com == 105) wait(2, 2);
-	if (com == 106) {
+	if (com == 106 || com == 107) {
 	    while (!bravoDone) {}
 	    goldenAngel(2);
 	}
@@ -176,7 +177,7 @@ int main(int argc, char **argv)
 	    missionQual1_3(0);
 	}
 	if (com == 105) wait(0, 2);
-	if (com == 106) {
+	if (com == 106 || com == 107) {
 	    missionQual1_1(0);
        	
 	    init_x = alpha_x;
@@ -340,7 +341,7 @@ std::thread launchDisplayThread()
                         	imageBGR.copyTo(*processingImagePtr1);
 
                         	//std::thread procThread1(colourThresholding2, processingImagePtr1, &processingDone1, &alpha_x, &alpha_y, 0, 10, 160, 179); // Launch a new thread
-				std::thread procThread1(grayscale, processingImagePtr1, &processingDone1);
+				std::thread procThread1(colourThresholding, processingImagePtr1, &processingDone1, &alpha_x, &alpha_y);
                         	procThread1.detach(); // you must detach the thread
                     	}
 		    }

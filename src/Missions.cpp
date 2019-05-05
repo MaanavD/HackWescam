@@ -249,7 +249,7 @@ void goldenAngel(int droneId)
     pilot->moveRelativeMetres(0.0, -1.5);
     pilot->moveRelativeMetres(-4.0, 0.0);
     pilot->moveRelativeMetres(0.0, 4.5);
-    pilot->moveRelativeMetres(-2.0, 0.0);
+    pilot->moveRelativeMetres(-2.5, 0.0);
 
     waitSeconds(2);
 
