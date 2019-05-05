@@ -42,6 +42,9 @@ void missionQual1_1(int droneId);
 void missionQual1_2(int droneId, double x, double y);
 void missionQual1_3(int droneId);
 
-void wait(int droneId);
+void wait(int droneId, int time);
+
+void goldenAngel(int droneId);
+void ahmed(int droneId);
 
 #endif /* SRC_MISSIONS_H_ */

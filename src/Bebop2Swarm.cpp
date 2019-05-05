@@ -97,7 +97,7 @@ int main(int argc, char **argv)
 // video and move the drones around manually by hand.
 #ifndef NO_FLIGHT
     char com = 0;
-    while (com != 103 && com != 104)
+    while (com != 103 && com != 104 && com != 105)
     {
         cout << "Enter Command (g) to start: ";
         cin >> com;
@@ -115,27 +115,24 @@ int main(int argc, char **argv)
     int init_y = 1;
 
     std::thread bravoThread( [&]() {
-        if (com == 103) missionOverwatchBravo(1);
-        if (com == 104) wait(1);
+        if (com == 103) wait(1, 2);
+        if (com == 104) wait(1, 90);
+	if (com == 105) ahmed(1);
 
 	bravoDone = true;
     });
     
     std::thread charlieThread( [&]() {
-        if (com == 103) missionOverwatchCharlie(2);
-        if (com == 104) wait(2);
+        if (com == 103) goldenAngel(2);
+        if (com == 104) wait(2, 90);
+	if (com == 105) wait(2, 2);
 
         charlieDone = true;
     });
 
     std::thread alphaThread( [&]() {
         if (com == 103) {
- 	    missionOverwatchAlpha(0);
-
-	    while (!bravoDone && !charlieDone) {}
-            
-	    takeoffDrone(0);
-            landDrone(0);
+ 	    wait(1, 2);
 	}
         if (com == 104) {
 	    missionQual1_1(0);
@@ -147,12 +144,12 @@ int main(int argc, char **argv)
 	    double sumy = 0;
 
 	    int counter = 1;
-	    while (!bravoDone && !charlieDone) {
+	    while (!bravoDone || !charlieDone) {
 	        int dx =  alpha_x - init_x;
 	        int dy =  init_y - alpha_y;
 	        if (counter % 500 == 0) {
 		    cout << "DeltaX: " + to_string(dx) + "   ||   DeltaY: " + to_string(dy) << endl;
-		    missionQual1_2(0, sumx/(double) counter, sumy/(double) counter);
+		    //missionQual1_2(0, sumx/(double) counter, sumy/(double) counter);
                     sumx = 0;
 		    sumy = 0;
 		    counter = 1;
@@ -174,6 +171,7 @@ int main(int argc, char **argv)
 
 	    missionQual1_3(0);
 	}
+	if (com == 105) wait(0, 2);
     });
 
 
@@ -252,6 +250,7 @@ std::thread launchDisplayThread()
                              Rect(0, SUBWINDOW_HEIGHT, SUBWINDOW_WIDTH, SUBWINDOW_HEIGHT),
                              Rect(SUBWINDOW_WIDTH, SUBWINDOW_HEIGHT, SUBWINDOW_WIDTH, SUBWINDOW_HEIGHT)};
 
+	int counter = 0;
         while(!shouldExit) {
             constexpr unsigned OFFSET_X = 10;
             constexpr unsigned OFFSET_Y = 30;
@@ -299,7 +298,8 @@ std::thread launchDisplayThread()
                         	// Deep copy the new frame to the processingImage buffer
                         	imageBGR.copyTo(*processingImagePtr1);
 
-                        	std::thread procThread1(colourThresholding2, processingImagePtr1, &processingDone1, &alpha_x, &alpha_y, 0, 10, 160, 179); // Launch a new thread
+                        	//std::thread procThread1(colourThresholding2, processingImagePtr1, &processingDone1, &alpha_x, &alpha_y, 0, 10, 160, 179); // Launch a new thread
+				std::thread procThread1(grayscale, processingImagePtr1, &processingDone1);
                         	procThread1.detach(); // you must detach the thread
                     	}
 		    }
@@ -317,7 +317,7 @@ std::thread launchDisplayThread()
                         	// Deep copy the new frame to the processingImage buffer
                         	imageBGR.copyTo(*processingImagePtr2);
 
-                        	std::thread procThread2(contrast, processingImagePtr2, &processingDone2); // Launch a new thread
+                        	std::thread procThread2(saveIm, processingImagePtr2, &processingDone2, counter); // Launch a new thread
                         	procThread2.detach(); // you must detach the thread
                     	}
 		    }
@@ -335,7 +335,7 @@ std::thread launchDisplayThread()
                         	// Deep copy the new frame to the processingImage buffer
                         	imageBGR.copyTo(*processingImagePtr3);
 
-                        	std::thread procThread3(colourThresholding2, processingImagePtr3, &processingDone3, &dum1, &dum2, 0, 10, 160, 179); // Launch a new thread
+                        	std::thread procThread3(colourThresholding2Save, processingImagePtr3, &processingDone3, &dum1, &dum2, 0, 5, 170, 179, counter); // Launch a new thread
                         	procThread3.detach(); // you must detach the thread
                     	}
 		    }
@@ -346,6 +346,7 @@ std::thread launchDisplayThread()
             cv::imshow("VIDEO Streaming", streamingImage);
             keypress = cv::waitKey(1);
             openCVKeyCallbacks(keypress);
+	    counter +=1;
         }
     }
     );

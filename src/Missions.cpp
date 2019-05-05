@@ -226,7 +226,57 @@ void missionQual1_3(int droneId)
     landDrone(droneId);
 }
 
-void wait(int droneId)
+void wait(int droneId, int time)
 {
-    waitSeconds(90);
+    waitSeconds(time);
+}
+
+void goldenAngel(int droneId)
+{
+    CameraControlPtr camera  = g_drones[droneId]->getCameraControl();
+    PilotPtr         pilot   = g_drones[droneId]->getPilot();
+
+    takeoffDrone(droneId);
+
+    camera->setTiltPan(-90.0f, 0.0);
+
+    pilot->moveRelativeMetres(2.0, 0.0);
+    pilot->moveRelativeMetres(4.0, 0.0);
+    pilot->moveRelativeMetres(0.0, -1.5);
+    pilot->moveRelativeMetres(-4.0, 0.0);
+    pilot->moveRelativeMetres(0.0, -1.5);
+    pilot->moveRelativeMetres(4.0, 0.0);
+    pilot->moveRelativeMetres(0.0, -1.5);
+    pilot->moveRelativeMetres(-4.0, 0.0);
+    pilot->moveRelativeMetres(0.0, 4.5);
+    pilot->moveRelativeMetres(-2.0, 0.0);
+
+    waitSeconds(2);
+
+    camera->setForward();
+
+    landDrone(droneId);
+}
+
+void ahmed(int droneId)
+{
+    CameraControlPtr camera  = g_drones[droneId]->getCameraControl();
+    PilotPtr         pilot   = g_drones[droneId]->getPilot();
+
+    takeoffDrone(droneId);
+
+    camera->setTiltPan(-90.0f, 0.0);
+
+    pilot->moveRelativeMetres(2.0, 0.0);
+    pilot->moveRelativeMetres(4.0, 0.0);
+    pilot->moveRelativeMetres(0.0, 4.0);
+    pilot->moveRelativeMetres(-4.0, 0.0);
+    pilot->moveRelativeMetres(0.0, -4.0);
+    pilot->moveRelativeMetres(-2.0, 0.0);
+
+    waitSeconds(2);
+
+    camera->setForward();
+
+    landDrone(droneId);
 }
