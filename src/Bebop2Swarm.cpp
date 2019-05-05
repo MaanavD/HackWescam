@@ -58,6 +58,9 @@ void openCVKeyCallbacks(const int key);    // process key presses from the OpenC
 int alpha_x = 0;
 int alpha_y = 0;
 
+int dum1 = 0;
+int dum2 = 0;
+
 
 
 
@@ -126,8 +129,14 @@ int main(int argc, char **argv)
     });
 
     std::thread alphaThread( [&]() {
-        takeoffDrone(0);
-        if (com == 103) missionOverwatchAlpha(0);
+        if (com == 103) {
+ 	    missionOverwatchAlpha(0);
+
+	    while (!bravoDone && !charlieDone) {}
+            
+	    takeoffDrone(0);
+            landDrone(0);
+	}
         if (com == 104) {
 	    missionQual1_1(0);
        	
@@ -165,10 +174,6 @@ int main(int argc, char **argv)
 
 	    missionQual1_3(0);
 	}
-
-
-
-        landDrone(0);
     });
 
 
@@ -312,7 +317,7 @@ std::thread launchDisplayThread()
                         	// Deep copy the new frame to the processingImage buffer
                         	imageBGR.copyTo(*processingImagePtr2);
 
-                        	std::thread procThread2(grayscale, processingImagePtr2, &processingDone2); // Launch a new thread
+                        	std::thread procThread2(contrast, processingImagePtr2, &processingDone2); // Launch a new thread
                         	procThread2.detach(); // you must detach the thread
                     	}
 		    }
@@ -330,7 +335,7 @@ std::thread launchDisplayThread()
                         	// Deep copy the new frame to the processingImage buffer
                         	imageBGR.copyTo(*processingImagePtr3);
 
-                        	std::thread procThread3(contrast, processingImagePtr3, &processingDone3); // Launch a new thread
+                        	std::thread procThread3(colourThresholding2, processingImagePtr3, &processingDone3, &dum1, &dum2, 0, 10, 160, 179); // Launch a new thread
                         	procThread3.detach(); // you must detach the thread
                     	}
 		    }

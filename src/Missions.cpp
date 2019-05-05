@@ -148,11 +148,7 @@ void missionOverwatchAlpha(int droneId)
     CameraControlPtr camera  = g_drones[droneId]->getCameraControl();
     PilotPtr         pilot   = g_drones[droneId]->getPilot();
 
-    takeoffDrone(droneId);
-
     camera->setTiltPan(-55.0f, 0);
-
-    landDrone(droneId);
 }
 void missionOverwatchBravo(int droneId)
 {
@@ -162,11 +158,11 @@ void missionOverwatchBravo(int droneId)
     takeoffDrone(droneId);
 
     camera->setTiltPan(17.0f, 45.0f); // Look up and to the right
-    waitSeconds(5);
+    waitSeconds(2);
     camera->setTiltPan(-17.0f, -45.0f); // Look down and to the left
-    waitSeconds(5);
+    waitSeconds(2);
     camera->setForward();
-    waitSeconds(5);
+    waitSeconds(2);
 
     pilot->moveRelativeMetres(2.0, 0.0); // Move forward 1 metre
     pilot->moveRelativeMetres(-2.0, 0.0); // move backward 1 meter
@@ -202,6 +198,8 @@ void missionQual1_1(int droneId)
     CameraControlPtr camera  = g_drones[droneId]->getCameraControl();
     PilotPtr         pilot   = g_drones[droneId]->getPilot();
 
+    takeoffDrone(droneId);
+
     pilot->moveRelativeMetres(-1.6, 0.0); // move back
     camera->setTiltPan(-36.0f, 0); // look angled
     waitSeconds(4);
@@ -224,9 +222,11 @@ void missionQual1_3(int droneId)
     camera->setTiltPan(-35.0f, 0);
     waitSeconds(5);
     camera->setForward();
+
+    landDrone(droneId);
 }
 
 void wait(int droneId)
 {
-    waitSeconds(120);
+    waitSeconds(90);
 }
