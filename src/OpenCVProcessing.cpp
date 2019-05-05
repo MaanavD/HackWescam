@@ -43,7 +43,7 @@ void harrisCorner(Mat &grayImage, Mat &outputImage)
 }
 
 
-void openCVProcessing(shared_ptr<Mat> imageToProcess, bool *processingDone, int *alpha_x, int *alpha_y)
+void colourThresholding(shared_ptr<Mat> imageToProcess, bool *processingDone, int *alpha_x, int *alpha_y)
 {
     //Capture a temporary image from the camera
     Mat imgOriginal;
@@ -137,6 +137,53 @@ void openCVProcessing(shared_ptr<Mat> imageToProcess, bool *processingDone, int 
 
     // Output Image
     imgThresholded.copyTo(*imageToProcess);
+
+    *processingDone = true;
+}
+
+
+
+
+
+
+
+void contrast(shared_ptr<Mat> imageToProcess, bool *processingDone)
+{
+    //Capture a temporary image from the camera
+    Mat imgCont;
+    (*imageToProcess).convertTo(imgCont, CV_32S);
+
+    double beta = 200.0; // CANNOT GO OVER 255
+    int kappa = 259; // stay at 259
+    double contrast_factor = kappa * (beta + 255) / (255 *(kappa - beta));
+    
+    Scalar scale(128, 128, 128);
+
+    imgCont -= scale;
+    imgCont += contrast_factor;
+    imgCont += scale;
+
+    imgCont.convertTo(imgCont, CV_8U);
+
+    // Output Image
+    imgCont.copyTo(*imageToProcess);
+
+    *processingDone = true;
+}
+
+
+
+
+
+
+
+void grayscale(shared_ptr<Mat> imageToProcess, bool *processingDone)
+{
+    Mat gray;
+    cvtColor(*imageToProcess, gray, COLOR_BGR2GRAY); // Convert to grayscale
+
+    // Output Image
+    gray.copyTo(*imageToProcess);
 
     *processingDone = true;
 }

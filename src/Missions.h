@@ -36,7 +36,6 @@ void missionOverwatchAlpha(int droneId);
 void missionOverwatchBravo(int droneId);
 void missionOverwatchCharlie(int droneId);
 
-void alphaInitPos(int droneId);
 void alphaCorrection(int droneId, int x, int y);
 
 #endif /* SRC_MISSIONS_H_ */

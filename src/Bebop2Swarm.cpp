@@ -108,6 +108,9 @@ int main(int argc, char **argv)
     volatile bool bravoDone = false;
     volatile bool charlieDone = false;
 
+    int init_x = 1;
+    int init_y = 1;
+
     std::thread bravoThread( [&]() {
         takeoffDrone(1);
         if (com == 103) mission1(1);
@@ -131,7 +134,14 @@ int main(int argc, char **argv)
         if (com == 103) mission1(0);
         if (com == 104) missionOverwatchAlpha(0);
         
-	while (!bravoDone && !charlieDone) {}
+	init_x = alpha_x;
+	init_y = alpha_y;
+
+	while (!bravoDone && !charlieDone) {
+	    string dx = to_string(init_x - alpha_x);
+	    string dy = to_string(init_y - alpha_y);
+	    cout << "DeltaX: " + dx + "   ||   DeltaY: " + dy;
+	}
 
         landDrone(0);
     });
@@ -259,7 +269,7 @@ std::thread launchDisplayThread()
                         	// Deep copy the new frame to the processingImage buffer
                         	imageBGR.copyTo(*processingImagePtr1);
 
-                        	std::thread procThread1(openCVProcessing, processingImagePtr1, &processingDone1, &alpha_x, &alpha_y); // Launch a new thread
+                        	std::thread procThread1(colourThresholding, processingImagePtr1, &processingDone1, &alpha_x, &alpha_y); // Launch a new thread
                         	procThread1.detach(); // you must detach the thread
                     	}
 		    }
@@ -277,7 +287,7 @@ std::thread launchDisplayThread()
                         	// Deep copy the new frame to the processingImage buffer
                         	imageBGR.copyTo(*processingImagePtr2);
 
-                        	std::thread procThread2(openCVProcessing, processingImagePtr2, &processingDone2, &alpha_x, &alpha_y); // Launch a new thread
+                        	std::thread procThread2(grayscale, processingImagePtr2, &processingDone2); // Launch a new thread
                         	procThread2.detach(); // you must detach the thread
                     	}
 		    }
@@ -295,7 +305,7 @@ std::thread launchDisplayThread()
                         	// Deep copy the new frame to the processingImage buffer
                         	imageBGR.copyTo(*processingImagePtr3);
 
-                        	std::thread procThread3(openCVProcessing, processingImagePtr3, &processingDone3, &alpha_x, &alpha_y); // Launch a new thread
+                        	std::thread procThread3(contrast, processingImagePtr3, &processingDone3); // Launch a new thread
                         	procThread3.detach(); // you must detach the thread
                     	}
 		    }

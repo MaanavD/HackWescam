@@ -11,6 +11,8 @@
 
 #include "opencv2/opencv.hpp"
 
-void openCVProcessing(std::shared_ptr<cv::Mat> imageToProcessPtr, bool *processingDone, int *alpha_x, int *alpha_y);
+void colourThresholding(std::shared_ptr<cv::Mat> imageToProcessPtr, bool *processingDone, int *alpha_x, int *alpha_y);
+void contrast(std::shared_ptr<cv::Mat> imageToProcessPtr, bool *processingDone);
+void grayscale(std::shared_ptr<cv::Mat> imageToProcessPtr, bool *processingDone);
 
 #endif /* SRC_OPENCVPROCESSING_H_ */

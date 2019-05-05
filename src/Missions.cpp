@@ -149,7 +149,6 @@ void missionOverwatchAlpha(int droneId)
     PilotPtr         pilot   = g_drones[droneId]->getPilot();
 
     camera->setTiltPan(-55.0f, 0);
-    camera->setForward();
 }
 void missionOverwatchBravo(int droneId)
 {
@@ -185,6 +184,4 @@ void missionOverwatchCharlie(int droneId)
 
     camera->setForward();
 }
-
-
 
