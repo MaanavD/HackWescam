@@ -41,7 +41,9 @@ using cv::Scalar;
 vector<shared_ptr<Bebop2>>            g_drones;
 vector<shared_ptr<VideoFrameGeneric>> g_frames;
 
-bool processingDone = true;      // flag used to indicated when the processing thread is done with a frame
+bool processingDone1 = true;      // flag used to indicated when the processing thread is done with a frame
+bool processingDone2 = true; 
+bool processingDone3 = true; 
 bool shouldExit = false;         // flag used to indicate the program should exit.
 int droneUnderManualControl = 0; // selects which drone is controlled manually by the keyboard
 
@@ -194,11 +196,15 @@ std::thread launchDisplayThread()
         cv::resizeWindow("VIDEO Streaming", 2*SUBWINDOW_WIDTH, 2*SUBWINDOW_HEIGHT);
 
         // Create a second video to display video processing related stuff
-        cv::namedWindow("PROCESSING", cv::WINDOW_AUTOSIZE);
+        cv::namedWindow("PROCESSING1", cv::WINDOW_AUTOSIZE);
+	cv::namedWindow("PROCESSING2", cv::WINDOW_AUTOSIZE);
+	cv::namedWindow("PROCESSING3", cv::WINDOW_AUTOSIZE);
 
         // Create frames for storing our output images
         Mat streamingImage(2*SUBWINDOW_HEIGHT, 2*SUBWINDOW_WIDTH, CV_8UC3);
-        shared_ptr<Mat> processingImagePtr = make_shared<Mat>();
+        shared_ptr<Mat> processingImagePtr1 = make_shared<Mat>();
+	shared_ptr<Mat> processingImagePtr2 = make_shared<Mat>();
+	shared_ptr<Mat> processingImagePtr3 = make_shared<Mat>();
 
         // Sub window positions, each drone gets a quadrant
         Rect subWindow[] = { Rect(0, 0, SUBWINDOW_WIDTH, SUBWINDOW_HEIGHT),
@@ -240,20 +246,59 @@ std::thread launchDisplayThread()
 
                     //-- Perform primary image processing. With complex algorithms, this likely won't be able to keep up
                     // with streaming video so it will run at a lower rate.
-                    if (processingDone == true) {  // only start a new frame when the old one is done
+		    if (droneId == 0)
+		    {
+                    	if (processingDone1 == true) {  // only start a new frame when the old one is done
 
-                        // First send the processed frame to the display (if it exists)
-                        if (!processingImagePtr->empty()) {
-                            cv::imshow("PROCESSING", *processingImagePtr); // Send the processed image to the window, dereference the pointer to get the Mat object
-                        }
-                        processingDone = false;  // clear the flag
+                        	// First send the processed frame to the display (if it exists)
+                        	if (!processingImagePtr1->empty()) {
+                            	cv::imshow("PROCESSING1", *processingImagePtr1); // Send the processed image to the window, dereference the pointer to get the Mat object
+                        	}
+                        	processingDone1 = false;  // clear the flag
 
-                        // Deep copy the new frame to the processingImage buffer
-                        imageBGR.copyTo(*processingImagePtr);
+                        	// Deep copy the new frame to the processingImage buffer
+                        	imageBGR.copyTo(*processingImagePtr1);
 
-                        std::thread procThread(openCVProcessing, processingImagePtr, &processingDone, &alpha_x, &alpha_y); // Launch a new thread
-                        procThread.detach(); // you must detach the thread
-                    }
+                        	std::thread procThread1(openCVProcessing, processingImagePtr1, &processingDone1, &alpha_x, &alpha_y); // Launch a new thread
+                        	procThread1.detach(); // you must detach the thread
+                    	}
+		    }
+
+		   else if (droneId == 1)
+		    {
+                    	if (processingDone2 == true) {  // only start a new frame when the old one is done
+
+                        	// First send the processed frame to the display (if it exists)
+                        	if (!processingImagePtr2->empty()) {
+                            	    cv::imshow("PROCESSING2", *processingImagePtr2); // Send the processed image to the window, dereference the pointer to get the Mat object
+                        	}
+                        	processingDone2= false;  // clear the flag
+
+                        	// Deep copy the new frame to the processingImage buffer
+                        	imageBGR.copyTo(*processingImagePtr2);
+
+                        	std::thread procThread2(openCVProcessing, processingImagePtr2, &processingDone2, &alpha_x, &alpha_y); // Launch a new thread
+                        	procThread2.detach(); // you must detach the thread
+                    	}
+		    }
+
+		    else if (droneId == 2)
+		    {
+                    	if (processingDone3 == true) {  // only start a new frame when the old one is done
+
+                        	// First send the processed frame to the display (if it exists)
+                        	if (!processingImagePtr3->empty()) {
+                            	cv::imshow("PROCESSING3", *processingImagePtr3); // Send the processed image to the window, dereference the pointer to get the Mat object
+                        	}
+                        	processingDone3 = false;  // clear the flag
+
+                        	// Deep copy the new frame to the processingImage buffer
+                        	imageBGR.copyTo(*processingImagePtr3);
+
+                        	std::thread procThread3(openCVProcessing, processingImagePtr3, &processingDone3, &alpha_x, &alpha_y); // Launch a new thread
+                        	procThread3.detach(); // you must detach the thread
+                    	}
+		    }
 
                 }
             }
