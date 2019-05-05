@@ -38,4 +38,10 @@ void missionOverwatchCharlie(int droneId);
 
 void alphaCorrection(int droneId, int x, int y);
 
+void missionQual1_1(int droneId);
+void missionQual1_2(int droneId, int x, int y);
+void missionQual1_3(int droneId);
+
+void wait(int droneId);
+
 #endif /* SRC_MISSIONS_H_ */

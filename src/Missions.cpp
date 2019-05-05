@@ -148,12 +148,18 @@ void missionOverwatchAlpha(int droneId)
     CameraControlPtr camera  = g_drones[droneId]->getCameraControl();
     PilotPtr         pilot   = g_drones[droneId]->getPilot();
 
+    takeoffDrone(droneId);
+
     camera->setTiltPan(-55.0f, 0);
+
+    landDrone(droneId);
 }
 void missionOverwatchBravo(int droneId)
 {
     CameraControlPtr camera  = g_drones[droneId]->getCameraControl();
     PilotPtr         pilot   = g_drones[droneId]->getPilot();
+
+    takeoffDrone(droneId);
 
     camera->setTiltPan(17.0f, 45.0f); // Look up and to the right
     waitSeconds(5);
@@ -164,12 +170,16 @@ void missionOverwatchBravo(int droneId)
 
     pilot->moveRelativeMetres(2.0, 0.0); // Move forward 1 metre
     pilot->moveRelativeMetres(-2.0, 0.0); // move backward 1 meter
+
+    landDrone(droneId);
 }
 
 void missionOverwatchCharlie(int droneId)
 {
     CameraControlPtr camera  = g_drones[droneId]->getCameraControl();
     PilotPtr         pilot   = g_drones[droneId]->getPilot();
+
+    takeoffDrone(droneId);
 
     camera->setTiltPan(-90.0f, 0.0);
 
@@ -183,5 +193,40 @@ void missionOverwatchCharlie(int droneId)
     waitSeconds(2);
 
     camera->setForward();
+
+    landDrone(droneId);
 }
 
+void missionQual1_1(int droneId)
+{
+    CameraControlPtr camera  = g_drones[droneId]->getCameraControl();
+    PilotPtr         pilot   = g_drones[droneId]->getPilot();
+
+    pilot->moveRelativeMetres(-1.5, 0.0); // move back
+    camera->setTiltPan(-55.0f, 0); // look angled
+    waitSeconds(2);
+}
+
+void missionQual1_2(int droneId, int dx, int dy)
+{
+    CameraControlPtr camera  = g_drones[droneId]->getCameraControl();
+    PilotPtr         pilot   = g_drones[droneId]->getPilot();
+
+    
+}
+
+void missionQual1_3(int droneId)
+{
+    CameraControlPtr camera  = g_drones[droneId]->getCameraControl();
+    PilotPtr         pilot   = g_drones[droneId]->getPilot();
+
+    pilot->moveRelativeMetres(1.5, 0.0);
+    camera->setTiltPan(-35.0f, 0);
+    waitSeconds(5);
+    camera->setForward();
+}
+
+void wait(int droneId)
+{
+    waitSeconds(40);
+}

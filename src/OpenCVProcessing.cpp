@@ -59,28 +59,28 @@ void colourThresholding(shared_ptr<Mat> imageToProcess, bool *processingDone, in
     //    imwrite("normal: " + s + ".jpg", imgOriginal);
 
     // Magenta
-    int mLowH = 315/2;
-    int mHighH = 340/2;
+    int mLowH = 317/2;
+    int mHighH = 345/2;
 
     int mLowS = 50; 
     int mHighS = 150;
 
-    int mLowV = 70;
-    int mHighV = 200;
+    int mLowV = 50;
+    int mHighV = 255;
 
     // 317 - 345
     // 27 - 65
     // 62 - 100
 
     // Green
-    int gLowH = 75/2;
-    int gHighH = 95/2;
+    int gLowH = 72/2;
+    int gHighH = 97/2;
 
     int gLowS = 50; 
     int gHighS = 150;
 
-    int gLowV = 70;
-    int gHighV = 200;
+    int gLowV = 50;
+    int gHighV = 255;
 
     // 72 - 97
     // 38 - 83

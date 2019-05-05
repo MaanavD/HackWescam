@@ -112,36 +112,42 @@ int main(int argc, char **argv)
     int init_y = 1;
 
     std::thread bravoThread( [&]() {
-        takeoffDrone(1);
-        if (com == 103) mission1(1);
-        if (com == 104) missionOverwatchBravo(1);
-        landDrone(1);
+        if (com == 103) missionOverwatchBravo(1);
+        if (com == 104) wait(1);
 
 	bravoDone = true;
     });
     
     std::thread charlieThread( [&]() {
-        takeoffDrone(2);
-        if (com == 103) mission1(2);
-        if (com == 104) missionOverwatchCharlie(2);
-        landDrone(2);
- 
+        if (com == 103) missionOverwatchCharlie(2);
+        if (com == 104) wait(2);
+
         charlieDone = true;
     });
 
     std::thread alphaThread( [&]() {
         takeoffDrone(0);
-        if (com == 103) mission1(0);
-        if (com == 104) missionOverwatchAlpha(0);
-        
-	init_x = alpha_x;
-	init_y = alpha_y;
+        if (com == 103) missionOverwatchAlpha(0);
+        if (com == 104) {
+	    missionQual1_1(0);
+       	
+	    init_x = alpha_x;
+	    init_y = alpha_y;
 
-	while (!bravoDone && !charlieDone) {
-	    string dx = to_string(init_x - alpha_x);
-	    string dy = to_string(init_y - alpha_y);
-	    cout << "DeltaX: " + dx + "   ||   DeltaY: " + dy;
+	    int counter = 0;
+	    while (!bravoDone && !charlieDone) {
+	        string dx = to_string(init_x - alpha_x);
+	        string dy = to_string(init_y - alpha_y);
+	        if (counter % 20 == 0) cout << "DeltaX: " + dx + "   ||   DeltaY: " + dy << endl;
+                //missionQual1_2(0, dx, dy);
+
+		counter += 1;
+	    }
+
+	    missionQual1_3(0);
 	}
+
+
 
         landDrone(0);
     });
