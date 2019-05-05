@@ -97,7 +97,7 @@ int main(int argc, char **argv)
 // video and move the drones around manually by hand.
 #ifndef NO_FLIGHT
     char com = 0;
-    while (com != 103 && com != 104 && com != 105)
+    while (com != 103 && com != 104 && com != 105 && com != 106)
     {
         cout << "Enter Command (g) to start: ";
         cin >> com;
@@ -116,17 +116,21 @@ int main(int argc, char **argv)
 
     std::thread bravoThread( [&]() {
         if (com == 103) wait(1, 2);
-        if (com == 104) wait(1, 90);
+        if (com == 104) wait(1, 25);
 	if (com == 105) ahmed(1);
+	if (com == 106) ahmed(1);
 
 	bravoDone = true;
     });
     
     std::thread charlieThread( [&]() {
         if (com == 103) goldenAngel(2);
-        if (com == 104) wait(2, 90);
+        if (com == 104) wait(2, 25);
 	if (com == 105) wait(2, 2);
-
+	if (com == 106) {
+	    while (!bravoDone) {}
+	    goldenAngel(2);
+	}
         charlieDone = true;
     });
 
@@ -147,7 +151,7 @@ int main(int argc, char **argv)
 	    while (!bravoDone || !charlieDone) {
 	        int dx =  alpha_x - init_x;
 	        int dy =  init_y - alpha_y;
-	        if (counter % 500 == 0) {
+	        if (counter % 5000 == 0) {
 		    cout << "DeltaX: " + to_string(dx) + "   ||   DeltaY: " + to_string(dy) << endl;
 		    //missionQual1_2(0, sumx/(double) counter, sumy/(double) counter);
                     sumx = 0;
@@ -172,6 +176,43 @@ int main(int argc, char **argv)
 	    missionQual1_3(0);
 	}
 	if (com == 105) wait(0, 2);
+	if (com == 106) {
+	    missionQual1_1(0);
+       	
+	    init_x = alpha_x;
+	    init_y = alpha_y;
+
+	    double sumx = 0;
+	    double sumy = 0;
+
+	    int counter = 1;
+	    while (!bravoDone || !charlieDone) {
+	        int dx =  alpha_x - init_x;
+	        int dy =  init_y - alpha_y;
+	        if (counter % 5000 == 0) {
+		    cout << "DeltaX: " + to_string(dx) + "   ||   DeltaY: " + to_string(dy) << endl;
+		    //missionQual1_2(0, sumx/(double) counter, sumy/(double) counter);
+                    sumx = 0;
+		    sumy = 0;
+		    counter = 1;
+                }
+		
+		sumx += dx;
+		sumy += dy;
+
+		counter += 1;
+	    }
+
+	    //sumx = sumx / counter;
+	    //sumy = sumy / counter;
+
+	    //cout << endl << sumx << endl;
+	    //cout << endl << sumy << endl;
+
+	    //missionQual1_2(0, sumx, sumy);
+
+	    missionQual1_3(0);
+	}
     });
 
 

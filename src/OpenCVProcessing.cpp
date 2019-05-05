@@ -296,6 +296,15 @@ void colourThresholding2Save(std::shared_ptr<cv::Mat> imageToProcess, bool *proc
     // 38 - 83
     // 55 - 80
 
+    int yLowH = 52;
+    int yHighH = 60;
+
+    int yLowS = 50; 
+    int yHighS = 255;
+
+    int yLowV = 50;
+    int yHighV = 255;
+
     //Create a black image with the size as the camera output
     Mat imgLines = Mat::zeros(imgOriginal.size(), CV_8UC3);;
 
@@ -303,10 +312,12 @@ void colourThresholding2Save(std::shared_ptr<cv::Mat> imageToProcess, bool *proc
     Mat imgThresholded1;
     inRange(imgOriginal, Scalar(mLowH, mLowS, mLowV), Scalar(mHighH, mHighS, mHighV), imgThresholded1);
     Mat imgThresholded2;
-    inRange(imgOriginal, Scalar(gLowH, gLowS, gLowV), Scalar(gHighH, gHighS, gHighV), imgThresholded2);  
+    inRange(imgOriginal, Scalar(gLowH, gLowS, gLowV), Scalar(gHighH, gHighS, gHighV), imgThresholded2);
+    Mat imgThresholded3;
+    inRange(imgOriginal, Scalar(yLowH, yLowS, yLowV), Scalar(yHighH, yHighS, yHighV), imgThresholded3);   
 
     Mat imgThresholded;
-    imgThresholded = imgThresholded1 + imgThresholded2; 
+    imgThresholded = imgThresholded1 + imgThresholded2 + imgThresholded3; 
 
     //morphological opening (removes small objects from the foreground)
     erode(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(14, 14)) );
@@ -415,7 +426,7 @@ void saveIm(shared_ptr<Mat> imageToProcess, bool *processingDone, int counter)
     string time_s = ctime(&tt);
     time_s = "Time: " + time_s.substr(0, time_s.size()-1);
 
-    if (counter % 200 == 0) imwrite("./a/AHMED - " + time_s + ".jpg", (*imageToProcess));
+    if (counter % 500 == 0) imwrite("./a/AHMED - " + time_s + ".jpg", (*imageToProcess));
 
     *processingDone = true;
 }
