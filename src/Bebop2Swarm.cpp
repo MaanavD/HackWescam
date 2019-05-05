@@ -50,6 +50,15 @@ std::thread launchDisplayThread();         // a function to launch the primary d
 void initDrones(vector<string> callsigns); // Takes in a vector of drone callsigns, and initializes each one
 void openCVKeyCallbacks(const int key);    // process key presses from the OpenCV window
 
+
+
+
+int alpha_x = 0;
+int alpha_y = 0;
+
+
+
+
 int main(int argc, char **argv)
 {
 
@@ -228,7 +237,7 @@ std::thread launchDisplayThread()
                         // Deep copy the new frame to the processingImage buffer
                         imageBGR.copyTo(*processingImagePtr);
 
-                        std::thread procThread(openCVProcessing, processingImagePtr, &processingDone); // Launch a new thread
+                        std::thread procThread(openCVProcessing, processingImagePtr, &processingDone, &alpha_x, &alpha_y); // Launch a new thread
                         procThread.detach(); // you must detach the thread
                     }
 

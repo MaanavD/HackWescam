@@ -118,7 +118,7 @@ void missionLookHorizontal(int droneId)
     waitSeconds(3);
 }
 
-void missionTrackCenter1(int droneId)
+void missionTrackCenter1(int droneId, int x, int y)
 {
     CameraControlPtr camera  = g_drones[droneId]->getCameraControl();
     PilotPtr         pilot   = g_drones[droneId]->getPilot();

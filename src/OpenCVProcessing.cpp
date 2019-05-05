@@ -15,6 +15,9 @@ using namespace cv;
 //#include "opencv2/core/cuda.hpp"
 //#include "opencv2/cudaimgproc.hpp"
 
+#include <iostream>
+#include <fstream>
+
 using namespace cv;
 using namespace cv::dnn;
 using namespace cv::xfeatures2d;
@@ -117,13 +120,15 @@ void openCVProcessing(shared_ptr<Mat> imageToProcess, bool *processingDone)
     {
       //calculate the position of the ball
       int posX = dM10 / dArea;
-      int posY = dM01 / dArea;  
+      int posY = dM01 / dArea;
+
+      //*alpha_x = posX
+      //*alpha_y = posY
 
       string position_s = "Position: " + to_string(posX) + ", " + to_string(posY);
       putText(imgThresholded, position_s, Point(0, 125), FONT_HERSHEY_PLAIN, 3.0, Scalar(255, 255, 255), 2, 8, false);
       circle(imgThresholded, Point(posX, posY), 30, Scalar(0,0,255), 10, 8, 0);
-      
-      //circle(imgThresholded, Point(posX, posY), 30, Scalar(255), 10, 8, 0);
+
     }
 
     putText(imgThresholded, time_s, Point(0, 25), FONT_HERSHEY_PLAIN, 3.0, Scalar(255, 255, 255), 2, 8, false);
