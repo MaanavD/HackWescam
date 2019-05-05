@@ -32,4 +32,8 @@ void missionDance2();
 void missionTrackCenter1(int droneId);
 void missionTrackCenter2(int droneId);
 
+void missionOverwatchAlpha(int droneId);
+void missionOverwatchBravo(int droneId);
+void missionOverwatchCharlie(int droneId);
+
 #endif /* SRC_MISSIONS_H_ */

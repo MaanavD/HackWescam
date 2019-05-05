@@ -101,22 +101,22 @@ int main(int argc, char **argv)
         landDrone(0);
     });
 
-    //std::thread bravoThread( [&]() {
-        //takeoffDrone(1);
-        //missionTrackCenter1(1);
-        //landDrone(1);
-    //});
+    std::thread bravoThread( [&]() {
+        takeoffDrone(1);
+        missionTrackCenter1(1);
+        landDrone(1);
+    });
     
-    //std::thread charlieThread( [&]() {
-        //takeoffDrone(2);
-        //missionTrackCenter1(2);
-        //landDrone(2);
-    //});
+    std::thread charlieThread( [&]() {
+        takeoffDrone(2);
+        missionTrackCenter1(2);
+        landDrone(2);
+    });
 
     // Wait for threads to complete
     if (alphaThread.joinable()) { alphaThread.join(); }
-    //if (bravoThread.joinable()) { bravoThread.join(); }
-    //if (charlieThread.joinable()) { charlieThread.join(); }
+    if (bravoThread.joinable()) { bravoThread.join(); }
+    if (charlieThread.joinable()) { charlieThread.join(); }
     
 
 //#endif

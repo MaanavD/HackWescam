@@ -9,7 +9,6 @@
 
 using namespace std;
 using namespace cv;
-
 #include "opencv2/calib3d.hpp"
 #include "opencv2/features2d.hpp"
 #include "opencv2/xfeatures2d.hpp"
@@ -121,13 +120,13 @@ void openCVProcessing(shared_ptr<Mat> imageToProcess, bool *processingDone)
       int posY = dM01 / dArea;  
 
       string position_s = "Position: " + to_string(posX) + ", " + to_string(posY);
-      putText(imgThresholded, position_s, Point(0, 150), FONT_HERSHEY_PLAIN, 5.0, Scalar(255, 255, 255), 4, 8, false);
+      putText(imgThresholded, position_s, Point(0, 125), FONT_HERSHEY_PLAIN, 3.0, Scalar(255, 255, 255), 2, 8, false);
       circle(imgThresholded, Point(posX, posY), 30, Scalar(0,0,255), 10, 8, 0);
       
       //circle(imgThresholded, Point(posX, posY), 30, Scalar(255), 10, 8, 0);
     }
 
-    putText(imgThresholded, time_s, Point(0, 50), FONT_HERSHEY_PLAIN, 5.0, Scalar(255, 255, 255), 4, 8, false);
+    putText(imgThresholded, time_s, Point(0, 25), FONT_HERSHEY_PLAIN, 3.0, Scalar(255, 255, 255), 2, 8, false);
     
     ////
 

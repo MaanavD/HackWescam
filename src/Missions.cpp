@@ -123,7 +123,7 @@ void missionTrackCenter1(int droneId)
     CameraControlPtr camera  = g_drones[droneId]->getCameraControl();
     PilotPtr         pilot   = g_drones[droneId]->getPilot();
 
-    camera->setTiltPan(-60.0f, 0);
+    camera->setTiltPan(-55.0f, 0);
     waitSeconds(5);
     camera->setForward();
     waitSeconds(5);
