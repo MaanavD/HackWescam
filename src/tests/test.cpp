@@ -20,13 +20,13 @@ int main( int argc, char** argv )
   namedWindow("Control", CV_WINDOW_AUTOSIZE); //create a window called "Control"
 
   // Magenta
-  int mLowH = 317/2;
-  int mHighH = 345/2;
+  int mLowH = 40/2;
+  int mHighH = 60/2;
 
-  int mLowS = 10; 
+  int mLowS = 70; 
   int mHighS = 255;
 
-  int mLowV = 10;
+  int mLowV = 70;
   int mHighV = 255;
 
   // 317 - 345
@@ -34,13 +34,13 @@ int main( int argc, char** argv )
   // 62 - 100
 
   // Green
-  int gLowH = 70/2;
-  int gHighH = 100/2;
+  int gLowH = 40/2;
+  int gHighH = 60/2;
 
-  int gLowS = 10; 
+  int gLowS = 70; 
   int gHighS = 255;
 
-  int gLowV = 10;
+  int gLowV = 70;
   int gHighV = 255;
 
   // 72 - 97
@@ -62,8 +62,8 @@ int main( int argc, char** argv )
 
   //Capture a temporary image from the camera
   Mat imgTmp;
-  //cap.read(imgTmp);
-  imgTmp = imread("DroneAreaA.jpg", IMREAD_COLOR);
+  cap.read(imgTmp);
+  //imgTmp = imread("DroneAreaA.jpg", IMREAD_COLOR);
 
   //Create a black image with the size as the camera output
   Mat imgLines = Mat::zeros( imgTmp.size(), CV_8UC3 );;
@@ -78,9 +78,9 @@ int main( int argc, char** argv )
     string time_s = ctime(&tt);
     time_s = "Time: " + time_s.substr(0, time_s.size()-1);
 
-    //bool bSuccess = cap.read(imgOriginal); // read a new frame from video
-    bool bSuccess = true;
-    imgOriginal = imread("DroneAreaA.jpg", IMREAD_COLOR);
+    bool bSuccess = cap.read(imgOriginal); // read a new frame from video
+    //bool bSuccess = true;
+    //imgOriginal = imread("DroneAreaA.jpg", IMREAD_COLOR);
 
     if (!bSuccess) //if not success, break loop
     {
@@ -108,12 +108,12 @@ int main( int argc, char** argv )
     imgThresholded = imgThresholded1 + imgThresholded2; 
 
     //morphological opening (removes small objects from the foreground)
-    erode(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(15, 15)) );
-    dilate( imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(15, 15)) ); 
+    erode(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(11, 11)) );
+    dilate( imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(11, 11)) ); 
 
     //morphological closing (removes small holes from the foreground)
-    dilate( imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(15, 15)) ); 
-    erode(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(15, 15)) );
+    dilate( imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(11, 11)) ); 
+    erode(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(11, 11)) );
 
     //Calculate the moments of the thresholded image
     Moments oMoments = moments(imgThresholded);
@@ -145,12 +145,12 @@ int main( int argc, char** argv )
     }
     
     putText(imgThresholded, time_s, Point(0, 50), FONT_HERSHEY_PLAIN, 5.0, Scalar(255, 255, 255), 4, 8, false);
-    //imshow("Thresholded Image", imgThresholded); //show the thresholded image
-    imwrite("output_thres.jpg", imgThresholded);
+    imshow("Thresholded Image", imgThresholded); //show the thresholded image
+    //imwrite("output_thres.jpg", imgThresholded);
 
     //imgOriginal = imgOriginal + imgLines;
-    //imshow("Original", imgOriginal); //show the original image
-    imwrite("output_target.jpg", imgOriginal);
+    imshow("Original", imgOriginal); //show the original image
+    //imwrite("output_target.jpg", imgOriginal);
     
     counter += 1;
 

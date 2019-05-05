@@ -62,10 +62,10 @@ void colourThresholding(std::shared_ptr<cv::Mat> imageToProcess, bool *processin
     int mLowH = 317/2;
     int mHighH = 345/2;
 
-    int mLowS = 50; 
+    int mLowS = 80; 
     int mHighS = 255;
 
-    int mLowV = 50;
+    int mLowV = 80;
     int mHighV = 255;
 
     // 317 - 345
@@ -76,10 +76,10 @@ void colourThresholding(std::shared_ptr<cv::Mat> imageToProcess, bool *processin
     int gLowH = 72/2;
     int gHighH = 97/2;
 
-    int gLowS = 50; 
+    int gLowS = 80; 
     int gHighS = 255;
 
-    int gLowV = 50;
+    int gLowV = 80;
     int gHighV = 255;
 
     // 72 - 97
@@ -103,8 +103,8 @@ void colourThresholding(std::shared_ptr<cv::Mat> imageToProcess, bool *processin
     dilate(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(4, 4)) ); 
 
     //morphological closing (removes small holes from the foreground)
-    dilate(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(4, 4)) ); 
-    erode(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(4, 4)) );
+    dilate(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(3, 3)) ); 
+    erode(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(3, 3)) );
 
     //Calculate the moments of the thresholded image
     Moments oMoments = moments(imgThresholded);
@@ -272,10 +272,10 @@ void colourThresholding2Save(std::shared_ptr<cv::Mat> imageToProcess, bool *proc
     //int mLowH = 317/2;
     //int mHighH = 345/2;
 
-    int mLowS = 50; 
+    int mLowS = 70; 
     int mHighS = 255;
 
-    int mLowV = 50;
+    int mLowV = 70;
     int mHighV = 255;
 
     // 317 - 345
@@ -286,10 +286,10 @@ void colourThresholding2Save(std::shared_ptr<cv::Mat> imageToProcess, bool *proc
     //int gLowH = 72/2;
     //int gHighH = 97/2;
 
-    int gLowS = 70; 
+    int gLowS = 80; 
     int gHighS = 255;
 
-    int gLowV = 70;
+    int gLowV = 80;
     int gHighV = 255;
 
     // 72 - 97
@@ -297,13 +297,13 @@ void colourThresholding2Save(std::shared_ptr<cv::Mat> imageToProcess, bool *proc
     // 55 - 80
 
     // yellow
-    int yLowH = 50;
-    int yHighH = 60;
+    int yLowH = 40/2;
+    int yHighH = 60/2;
 
-    int yLowS = 50; 
+    int yLowS = 80; 
     int yHighS = 255;
 
-    int yLowV = 50;
+    int yLowV = 80;
     int yHighV = 255;
 
     //Create a black image with the size as the camera output
@@ -321,12 +321,12 @@ void colourThresholding2Save(std::shared_ptr<cv::Mat> imageToProcess, bool *proc
     imgThresholded = imgThresholded1 + imgThresholded2 + imgThresholded3; 
 
     //morphological opening (removes small objects from the foreground)
-    erode(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(14, 14)) );
-    dilate(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(14, 14)) ); 
+    erode(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(12, 12)) );
+    dilate(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(12, 12)) ); 
 
     //morphological closing (removes small holes from the foreground)
-    dilate(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(14, 14)) ); 
-    erode(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(14, 14)) );
+    dilate(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(12, 12)) ); 
+    erode(imgThresholded, imgThresholded, getStructuringElement(MORPH_ELLIPSE, Size(12, 12)) );
 
     //Calculate the moments of the thresholded image
     Moments oMoments = moments(imgThresholded);
@@ -358,7 +358,7 @@ void colourThresholding2Save(std::shared_ptr<cv::Mat> imageToProcess, bool *proc
     putText(imgThresholded, time_s, Point(0, 25), FONT_HERSHEY_PLAIN, 3.0, Scalar(255, 255, 255), 2, 8, false);
 
     
-    if (counter % 5 == 0 && dArea > 500000) {
+    if (counter % 5 == 0 && dArea > 700000) {
         imwrite("./good/thres - " + time_s  + ".jpg", imgThresholded);
 	imwrite("./good/color - " + time_s  + ".jpg", (*imageToProcess));
 	cout << "AREA: ";

@@ -180,9 +180,9 @@ void missionOverwatchCharlie(int droneId)
     camera->setTiltPan(-90.0f, 0.0);
 
     pilot->moveRelativeMetres(2.0, 0.0);
-    pilot->moveRelativeMetres(4.0, 0.0);
+    pilot->moveRelativeMetres(3.0, 0.0);
     pilot->moveRelativeMetres(0.0, -4.0);
-    pilot->moveRelativeMetres(-4.0, 0.0);
+    pilot->moveRelativeMetres(-3.0, 0.0);
     pilot->moveRelativeMetres(0.0, 4.0);
     pilot->moveRelativeMetres(-2.0, 0.0);
 

@@ -129,7 +129,6 @@ int main(int argc, char **argv)
         if (com == 104) wait(2, 25);
 	if (com == 105) wait(2, 2);
 	if (com == 106 || com == 107) {
-	    while (!bravoDone) {}
 	    goldenAngel(2);
 	}
         charlieDone = true;
