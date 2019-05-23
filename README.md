@@ -1,5 +1,5 @@
 # HackWescam 
-May 13, 2019
+Hackathon winning project
 
 ## Group Members:
 Maanav
